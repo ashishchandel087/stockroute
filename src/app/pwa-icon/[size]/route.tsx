@@ -1,32 +1,21 @@
 import { ImageResponse } from "next/og";
+import { brandMarkDataUrl } from "@/lib/brand-mark";
 
 export function generateStaticParams() {
-  return [{ size: "192" }, { size: "512" }];
+  return [{ size: "192" }, { size: "512" }, { size: "maskable" }];
 }
 
-/** App icon for the home screen (PNG generated at build time). */
+/**
+ * Home-screen icons for the installed app (PNGs made at build time).
+ * "maskable" is square-edged: Android cuts it to the phone's own icon shape.
+ */
 export async function GET(_req: Request, ctx: RouteContext<"/pwa-icon/[size]">) {
   const { size: raw } = await ctx.params;
-  const size = raw === "512" ? 512 : 192;
+  const size = raw === "192" ? 192 : 512;
+  const src = brandMarkDataUrl({ rounded: raw !== "maskable" });
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#1f63dc",
-          color: "white",
-          fontSize: size * 0.42,
-          fontWeight: 700,
-          letterSpacing: -size * 0.01,
-        }}
-      >
-        SR
-      </div>
-    ),
+    // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+    <img src={src} width={size} height={size} />,
     { width: size, height: size },
   );
 }

@@ -11,7 +11,6 @@ export const metadata: Metadata = {
   description: "Order booking and inventory for distributors",
   applicationName: "StockRoute",
   appleWebApp: { capable: true, title: "StockRoute", statusBarStyle: "default" },
-  icons: { icon: "/pwa-icon/192", apple: "/pwa-icon/192" },
 };
 
 export const viewport: Viewport = {
